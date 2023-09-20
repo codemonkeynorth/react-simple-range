@@ -73,6 +73,12 @@ const ReactSimpleRange = (props) => {
 
     const getSliderInfo = () => {
         const sl = sliderRef.current;
+
+        // --------------------------------
+        // TODO: JMP 20230920 - patch error
+        if(!sl) return null
+        // --------------------------------
+
         return {
             bounds: sl.getBoundingClientRect(),
             length: sl.clientWidth,
@@ -108,6 +114,13 @@ const ReactSimpleRange = (props) => {
     };
 
     const updateSliderValue = (event, eventType) => {
+
+        // --------------------------------
+        // TODO: JMP 20230920 - patch error
+        var info = getSliderInfo();
+        if(!info) return
+        // --------------------------------
+        
         const { max, min, vertical } = props;
         const xCoords =
             (eventType !== EVENT_TYPES.TOUCH
@@ -121,11 +134,15 @@ const ReactSimpleRange = (props) => {
         let position;
         let lengthOrHeight;
         if (!vertical) {
-            position = xCoords - getSliderInfo().bounds.left;
-            lengthOrHeight = getSliderInfo().length;
+            //position = xCoords - getSliderInfo().bounds.left;
+            position = xCoords - info.bounds.left;
+            //lengthOrHeight = getSliderInfo().length;
+            lengthOrHeight = info.length;
         } else {
-            lengthOrHeight = getSliderInfo().height;
-            position = lengthOrHeight - (yCoords - getSliderInfo().bounds.top);
+            //lengthOrHeight = getSliderInfo().height;
+            lengthOrHeight = info.height;
+            //position = lengthOrHeight - (yCoords - getSliderInfo().bounds.top);
+            position = lengthOrHeight - (yCoords - info.bounds.top);
         }
         const percent = clampValue(
             +(position / lengthOrHeight).toFixed(2),
