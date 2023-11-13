@@ -57,6 +57,6 @@
         "pub": "npm run lib && npm publish"
     },
     "files": [
-        "lib/index.js"
+        "files": ["src"]
     ]
 }
